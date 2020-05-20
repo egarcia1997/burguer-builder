@@ -58,7 +58,7 @@ class BurguerBuilder extends Component {
         return (
             <Fragment>
                 <Burger ingredientes={this.state.ingredientes} />
-                <BuildControls agregar={this.addIngredienteHandler} quitar={this.removeIngredienteHandler} disabled={disabledInfo} />
+                <BuildControls agregar={this.addIngredienteHandler} quitar={this.removeIngredienteHandler} disabled={disabledInfo} precio={this.state.precioTotal} />
             </Fragment>
         );
     }
