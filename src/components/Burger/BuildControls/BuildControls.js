@@ -21,6 +21,7 @@ const BuildControls = (props) => {
                 remove={() => props.quitar(ctrl.tipo)}
                 disabled={props.disabled[ctrl.tipo]} />;
             })}
+            <button className={estilos.OrderButton} disabled={!props.comprable}>COMPRAR</button>
         </div>
     );
 }

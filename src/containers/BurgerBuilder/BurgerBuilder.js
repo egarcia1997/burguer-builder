@@ -23,6 +23,7 @@ class BurguerBuilder extends Component {
             meat: 0,
         },
         precioTotal: 4,
+        comprable: false,
     }
 
     addIngredienteHandler = (tipo) => {
@@ -34,6 +35,7 @@ class BurguerBuilder extends Component {
             ingredientes: ingredientesActualizados,
             precioTotal: precioAumentado,
         });
+        this.actualizarEstadoComprable(ingredientesActualizados);
     }
 
     removeIngredienteHandler = (tipo) => {
@@ -48,6 +50,16 @@ class BurguerBuilder extends Component {
             ingredientes: ingredientesActualizados,
             precioTotal: precioAumentado,
         });
+        this.actualizarEstadoComprable(ingredientesActualizados);
+    }
+
+    actualizarEstadoComprable = (ingredientes) => {
+        const sum = Object.keys(ingredientes).map(igKey => {
+            return ingredientes[igKey]
+        }).reduce((sum, el) => {
+            return sum + el;
+        }, 0);
+        this.setState({comprable: sum > 0});
     }
 
     render() {
@@ -58,7 +70,12 @@ class BurguerBuilder extends Component {
         return (
             <Fragment>
                 <Burger ingredientes={this.state.ingredientes} />
-                <BuildControls agregar={this.addIngredienteHandler} quitar={this.removeIngredienteHandler} disabled={disabledInfo} precio={this.state.precioTotal} />
+                <BuildControls
+                agregar={this.addIngredienteHandler}
+                quitar={this.removeIngredienteHandler}
+                disabled={disabledInfo}
+                precio={this.state.precioTotal}
+                comprable={this.state.comprable} />
             </Fragment>
         );
     }
