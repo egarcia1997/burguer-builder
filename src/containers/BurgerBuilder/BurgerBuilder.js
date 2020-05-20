@@ -37,14 +37,28 @@ class BurguerBuilder extends Component {
     }
 
     removeIngredienteHandler = (tipo) => {
-
+        const nuevaCantidad = this.state.ingredientes[tipo] - 1;
+        if (nuevaCantidad < 0) { // este if es porque si hay 0 ingredientes al eliminar queda negativo
+            return; // y tira error en Burger
+        }
+        const ingredientesActualizados = {...this.state.ingredientes};
+        ingredientesActualizados[tipo] = nuevaCantidad;
+        const precioAumentado = this.state.precioTotal - PRECIOS_INGREDIENTES[tipo];
+        this.setState({
+            ingredientes: ingredientesActualizados,
+            precioTotal: precioAumentado,
+        });
     }
 
     render() {
+        const disabledInfo = {...this.state.ingredientes};
+        for (let key in disabledInfo) {
+            disabledInfo[key] = disabledInfo[key] <= 0;
+        }
         return (
             <Fragment>
                 <Burger ingredientes={this.state.ingredientes} />
-                <BuildControls agregar={this.addIngredienteHandler} quitar={this.removeIngredienteHandler} />
+                <BuildControls agregar={this.addIngredienteHandler} quitar={this.removeIngredienteHandler} disabled={disabledInfo} />
             </Fragment>
         );
     }
