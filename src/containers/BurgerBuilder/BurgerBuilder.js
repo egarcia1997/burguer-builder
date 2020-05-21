@@ -73,6 +73,10 @@ class BurguerBuilder extends Component {
         this.setState({comprando: false});
     }
 
+    continuarCompraHandler = () => {
+        alert("Ahora tenés que garpar");
+    }
+
     render() {
         const disabledInfo = {...this.state.ingredientes};
         for (let key in disabledInfo) {
@@ -81,7 +85,11 @@ class BurguerBuilder extends Component {
         return (
             <Fragment>
                 <Modal mostrar={this.state.comprando} modalClosed={this.compraCanceladaHandler}>
-                    <OrderSummary ingredientes={this.state.ingredientes} />
+                    <OrderSummary
+                    ingredientes={this.state.ingredientes}
+                    compraCancelada={this.compraCanceladaHandler}
+                    continuarCompra={this.continuarCompraHandler}
+                    />
                 </Modal>
                 <Burger ingredientes={this.state.ingredientes} />
                 <BuildControls
