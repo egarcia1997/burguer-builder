@@ -1,10 +1,11 @@
 import React, {Fragment} from "react";
 import estilos from "./Layout.module.css";
+import Toolbar from "../Navigation/Toolbar/Toolbar";
 
 const Layout = (props) => {
     return (
         <Fragment>
-            <div>Toolbar, Sidedrawer, Backdrop</div>
+            <Toolbar />
             <main className={estilos.Content}>
                 {props.children}
             </main>
