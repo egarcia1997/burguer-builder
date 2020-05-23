@@ -6,7 +6,9 @@ import NavigationItems from "../NavigationItems/NavigationItems";
 const SideDrawer = (props) => {
     return (
         <div className={estilos.SideDrawer}>
-            <Logo />
+            <div className={estilos.Logo}>
+                <Logo />
+            </div>
             <nav>
                 <NavigationItems />
             </nav>
