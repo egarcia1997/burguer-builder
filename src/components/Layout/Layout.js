@@ -5,17 +5,25 @@ import SideDrawer from "../Navigation/SideDrawer/SideDrawer";
 
 class Layout extends Component {
     state = {
-        mostrarSideDrawer: true,
+        mostrarSideDrawer: false,
     }
 
     sideDrawerCerradoHandler = () => {
         this.setState({mostrarSideDrawer: false});
     }
 
+    sideDrawerToggleHandler = () => {
+        // esta forma de usar setState es para evitar que pasen cosas raras
+        // porque es asincrono
+        this.setState((prevState) => {
+            return {mostrarSideDrawer : !prevState.mostrarSideDrawer}
+        });
+    }
+
     render() {
         return (
             <Fragment>
-                <Toolbar />
+                <Toolbar drawerToggleClicked={this.sideDrawerToggleHandler} />
                 <SideDrawer mostrar={this.state.mostrarSideDrawer} cerrado={this.sideDrawerCerradoHandler} />
                 <main className={estilos.Content}>
                     {this.props.children}
