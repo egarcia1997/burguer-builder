@@ -1,8 +1,13 @@
 import React from "react";
+import estilos from "./DrawerToggle.module.css";
 
 const DrawerToggle = (props) => {
     return (
-        <div onClick={props.click}>MENU</div>
+        <div className={estilos.DrawerToggle} onClick={props.click}>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
     );
 }
 
