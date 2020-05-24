@@ -1,5 +1,5 @@
 import React, {Fragment} from 'react';
-import Layout from "./components/Layout/Layout";
+import Layout from "./containers/Layout/Layout";
 import BurguerBuilder from "./containers/BurgerBuilder/BurgerBuilder";
 
 function App() {
