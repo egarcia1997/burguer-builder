@@ -1,25 +1,31 @@
-import React, {Fragment} from "react";
+import React, {Fragment, Component} from "react";
 import Button from "../../UI/Button/Button";
 
-const OrderSummary = (props) => {
-    const resumenDeIngredientes = Object.keys(props.ingredientes).map(igKey => {
-        return (
-            <li key={igKey}>
-                <span style={{textTransform: "capitalize"}}>{igKey}:</span> {props.ingredientes[igKey]}
-            </li>
+class OrderSummary extends Component {
+    componentDidUpdate() {
+        console.log("[OrderSummary] DidUpdate")
+    }
+
+    render() {
+        const resumenDeIngredientes = Object.keys(this.props.ingredientes).map(igKey => {
+            return (
+                <li key={igKey}>
+                    <span style={{textTransform: "capitalize"}}>{igKey}:</span> {this.props.ingredientes[igKey]}
+                </li>
+            );
+        });
+        return(
+            <Fragment>
+                <h3>Tu orden:</h3>
+                <p>Una haburguesa con mucho colesterol y estos ingredientes:</p>
+                <ul>{resumenDeIngredientes}</ul>
+                <p><b>Precio total: ${this.props.precio.toFixed(2)}</b></p>
+                <p>¿Seguir a la confirmación de la compra?</p>
+                <Button tipo="Danger" clicked={this.props.compraCancelada}>CANCELAR</Button>
+                <Button tipo="Success" clicked={this.props.continuarCompra}>CONTINUAR</Button>
+            </Fragment>
         );
-    });
-    return(
-        <Fragment>
-            <h3>Tu orden:</h3>
-            <p>Una haburguesa con mucho colesterol y estos ingredientes:</p>
-            <ul>{resumenDeIngredientes}</ul>
-            <p><b>Precio total: ${props.precio.toFixed(2)}</b></p>
-            <p>¿Seguir a la confirmación de la compra?</p>
-            <Button tipo="Danger" clicked={props.compraCancelada}>CANCELAR</Button>
-            <Button tipo="Success" clicked={props.continuarCompra}>CONTINUAR</Button>
-        </Fragment>
-    );
+    }
 }
 
 export default OrderSummary;
