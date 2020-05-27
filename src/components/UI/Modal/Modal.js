@@ -6,7 +6,7 @@ class Modal extends Component {
     // esto esta para evitar que se vuelva a renderizar el componente OrderSummary
     // cada vez que agrego ingredientes a la hamburguesa
     shouldComponentUpdate(nextProps, nextState) {
-        return nextProps.mostrar !== this.props.mostrar;
+        return nextProps.mostrar !== this.props.mostrar || nextProps.children !== this.props.children;
     }
 
     componentDidUpdate() {
