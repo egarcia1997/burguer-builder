@@ -4,6 +4,7 @@ import Burger from "../../components/Burger/Burger";
 import BuildControls from "../../components/Burger/BuildControls/BuildControls";
 import Modal from "../../components/UI/Modal/Modal";
 import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
+import Spinner from "../../components/UI/Spinner/Spinner";
 
 const PRECIOS_INGREDIENTES = {
     salad: 0.5,
@@ -28,6 +29,7 @@ class BurguerBuilder extends Component {
         precioTotal: 4,
         comprable: false,
         comprando: false,
+        cargando: false,
     }
 
     addIngredienteHandler = (tipo) => {
@@ -75,6 +77,7 @@ class BurguerBuilder extends Component {
     }
 
     continuarCompraHandler = () => {
+        this.setState({cargando: true});
         const compra = {
             ingredientes: this.state.ingredientes,
             precio: this.state.precioTotal, // en una app real, el precio se calcula en el servidor, no aca
@@ -91,8 +94,16 @@ class BurguerBuilder extends Component {
         }
         axios.post("/compras.json", compra)
             .then(response => {
+                this.setState({
+                    cargando: false,
+                    comprando: false
+                });
                 console.log(response);
             }).catch(error => {
+                this.setState({
+                    cargando: false,
+                    comprando: false
+                });
                 console.log(error);
             });
     }
@@ -102,15 +113,23 @@ class BurguerBuilder extends Component {
         for (let key in disabledInfo) {
             disabledInfo[key] = disabledInfo[key] <= 0;
         }
-        return (
-            <Fragment>
-                <Modal mostrar={this.state.comprando} modalClosed={this.compraCanceladaHandler}>
-                    <OrderSummary
+
+        let orderSummary = (
+            <OrderSummary
                     ingredientes={this.state.ingredientes}
                     precio={this.state.precioTotal}
                     compraCancelada={this.compraCanceladaHandler}
                     continuarCompra={this.continuarCompraHandler}
                     />
+        );
+        if (this.state.cargando) {
+            orderSummary = <Spinner />;
+        }
+
+        return (
+            <Fragment>
+                <Modal mostrar={this.state.comprando} modalClosed={this.compraCanceladaHandler}>
+                    {orderSummary}
                 </Modal>
                 <Burger ingredientes={this.state.ingredientes} />
                 <BuildControls
