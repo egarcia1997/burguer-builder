@@ -1,4 +1,5 @@
 import React, {Component, Fragment} from "react";
+import axios from "../../axios-orders";
 import Burger from "../../components/Burger/Burger";
 import BuildControls from "../../components/Burger/BuildControls/BuildControls";
 import Modal from "../../components/UI/Modal/Modal";
@@ -74,7 +75,26 @@ class BurguerBuilder extends Component {
     }
 
     continuarCompraHandler = () => {
-        alert("Ahora tenés que garpar");
+        const compra = {
+            ingredientes: this.state.ingredientes,
+            precio: this.state.precioTotal, // en una app real, el precio se calcula en el servidor, no aca
+            cliente: {
+                nombre: "E. García",
+                direccion: {
+                    calle: "Calle Falsa 123",
+                    codigoPostal: "1234",
+                    pais: "Peronia",
+                },
+                email: "alguien@dominio.com",
+            },
+            envio: "Venezolano de PedidosYa",
+        }
+        axios.post("/compras.json", compra)
+            .then(response => {
+                console.log(response);
+            }).catch(error => {
+                console.log(error);
+            });
     }
 
     render() {
