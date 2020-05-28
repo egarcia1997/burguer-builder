@@ -21,16 +21,21 @@ class BurguerBuilder extends Component {
     // }
 
     state = {
-        ingredientes: {
-            salad: 0,
-            bacon: 0,
-            cheese: 0,
-            meat: 0,
-        },
+        ingredientes: null,
         precioTotal: 4,
         comprable: false,
         comprando: false,
         cargando: false,
+        error: null,
+    }
+
+    componentDidMount() {
+        axios.get("https://practica-burger-builder.firebaseio.com/ingredientes.json")
+            .then(response => {
+                this.setState({ingredientes: response.data});
+            }).catch(error => {
+                this.setState({error: true});
+            });
     }
 
     addIngredienteHandler = (tipo) => {
@@ -115,16 +120,35 @@ class BurguerBuilder extends Component {
             disabledInfo[key] = disabledInfo[key] <= 0;
         }
 
-        let orderSummary = (
-            <OrderSummary
-                    ingredientes={this.state.ingredientes}
-                    precio={this.state.precioTotal}
-                    compraCancelada={this.compraCanceladaHandler}
-                    continuarCompra={this.continuarCompraHandler}
-                    />
-        );
+        let orderSummary = null;
+        if (this.state.ingredientes) {
+            orderSummary = (
+                <OrderSummary
+                ingredientes={this.state.ingredientes}
+                precio={this.state.precioTotal}
+                compraCancelada={this.compraCanceladaHandler}
+                continuarCompra={this.continuarCompraHandler}
+                />
+            );
+        }
         if (this.state.cargando) {
             orderSummary = <Spinner />;
+        }
+
+        let burger = this.state.error ? <p>No se pueden cargar los ingredientes</p> : <Spinner />
+        if (this.state.ingredientes) {
+            burger = (
+                <Fragment>
+                    <Burger ingredientes={this.state.ingredientes} />
+                    <BuildControls
+                    agregar={this.addIngredienteHandler}
+                    quitar={this.removeIngredienteHandler}
+                    disabled={disabledInfo}
+                    precio={this.state.precioTotal}
+                    comprable={this.state.comprable}
+                    comprar={this.compraHandler} />
+                </Fragment>
+            );    
         }
 
         return (
@@ -132,14 +156,7 @@ class BurguerBuilder extends Component {
                 <Modal mostrar={this.state.comprando} modalClosed={this.compraCanceladaHandler}>
                     {orderSummary}
                 </Modal>
-                <Burger ingredientes={this.state.ingredientes} />
-                <BuildControls
-                agregar={this.addIngredienteHandler}
-                quitar={this.removeIngredienteHandler}
-                disabled={disabledInfo}
-                precio={this.state.precioTotal}
-                comprable={this.state.comprable}
-                comprar={this.compraHandler} />
+                {burger}
             </Fragment>
         );
     }
