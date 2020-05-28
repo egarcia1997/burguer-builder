@@ -8,14 +8,20 @@ const withErrorHandler = (WrappedComponent, axios) => {
         }
 
         UNSAFE_componentWillMount() {
-            axios.interceptors.request.use(request => {
+            this.reqInterceptor = axios.interceptors.request.use(request => {
                 this.setState({error: null});
                 return request;
             });
-            axios.interceptors.response.use(response => response, error => {
+            this.resInterceptor = axios.interceptors.response.use(response => response, error => {
                 console.log(error);
                 this.setState({error: error.message});
             });
+        }
+
+        componentWillUnmount() {
+            console.log("Will Unmount", this.reqInterceptor, this.resInterceptor);
+            axios.interceptors.request.eject(this.reqInterceptor);
+            axios.interceptors.response.eject(this.resInterceptor);
         }
 
         errorConfirmadoHandler = () => { // esto se ejecuta al hacer clic en el backdrop
