@@ -1,14 +1,16 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import Layout from "./containers/Layout/Layout";
 import BurguerBuilder from "./containers/BurgerBuilder/BurgerBuilder";
+import Checkout from "./containers/Checkout/Checkout";
 
 function App() {
   return (
-    <Fragment>
+    <div>
       <Layout>
-        <BurguerBuilder></BurguerBuilder>
+        <BurguerBuilder />
+        <Checkout />
       </Layout>
-    </Fragment>
+    </div>
   );
 }
 
