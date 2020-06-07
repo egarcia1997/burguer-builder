@@ -1,8 +1,10 @@
 import React from "react";
+import { withRouter } from "react-router-dom";
 import estilos from "./Burger.module.css";
 import BurgerIngredient from "./BurgerIngredient/BurgerIngredient";
 
 const Burger = (props) => {
+    console.log("Burger props", props);
     let ingredientesTransformados = Object.keys(props.ingredientes).map(igKey => {
         return [...Array(props.ingredientes[igKey])].map((_, i) => {
             return <BurgerIngredient key={igKey + i} tipo={igKey} />;
@@ -25,4 +27,7 @@ const Burger = (props) => {
     );
 }
 
-export default Burger;
+// esto hoc se usa para que este componente tenga props.history
+// normalmente ese prop solo esta disponible en los componentes a los que se accede desde un Route
+// props.history.match va a hacer referencia a la ruta mas reciente
+export default withRouter(Burger);
