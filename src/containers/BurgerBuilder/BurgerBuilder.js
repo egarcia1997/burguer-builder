@@ -30,6 +30,7 @@ class BurguerBuilder extends Component {
     }
 
     componentDidMount() {
+        console.log("BurgerBuilder props", this.props);
         axios.get("https://practica-burger-builder.firebaseio.com/ingredientes.json")
             .then(response => {
                 this.setState({ingredientes: response.data});
@@ -83,35 +84,36 @@ class BurguerBuilder extends Component {
     }
 
     continuarCompraHandler = () => {
-        this.setState({cargando: true});
-        const compra = {
-            ingredientes: this.state.ingredientes,
-            precio: this.state.precioTotal, // en una app real, el precio se calcula en el servidor, no aca
-            cliente: {
-                nombre: "E. García",
-                direccion: {
-                    calle: "Calle Falsa 123",
-                    codigoPostal: "1234",
-                    pais: "Peronia",
-                },
-                email: "alguien@dominio.com",
-            },
-            envio: "Venezolano de PedidosYa",
-        }
-        axios.post("/compras.json", compra)
-            .then(response => {
-                this.setState({
-                    cargando: false,
-                    comprando: false
-                });
-                console.log(response);
-            }).catch(error => {
-                this.setState({
-                    cargando: false,
-                    comprando: false
-                });
-                console.log(error);
-            });
+        // this.setState({cargando: true});
+        // const compra = {
+        //     ingredientes: this.state.ingredientes,
+        //     precio: this.state.precioTotal, // en una app real, el precio se calcula en el servidor, no aca
+        //     cliente: {
+        //         nombre: "E. García",
+        //         direccion: {
+        //             calle: "Calle Falsa 123",
+        //             codigoPostal: "1234",
+        //             pais: "Peronia",
+        //         },
+        //         email: "alguien@dominio.com",
+        //     },
+        //     envio: "Venezolano de PedidosYa",
+        // }
+        // axios.post("/compras.json", compra)
+        //     .then(response => {
+        //         this.setState({
+        //             cargando: false,
+        //             comprando: false
+        //         });
+        //         console.log(response);
+        //     }).catch(error => {
+        //         this.setState({
+        //             cargando: false,
+        //             comprando: false
+        //         });
+        //         console.log(error);
+        //     });
+        this.props.history.push("/checkout");
     }
 
     render() {
