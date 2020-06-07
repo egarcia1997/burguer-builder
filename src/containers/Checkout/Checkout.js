@@ -11,10 +11,23 @@ class Checkout extends Component {
         }
     }
 
+    cancelarCompraHandler = () => {
+        // este metodo es lo mismo que hacer clic en el boton atras del navegador
+        this.props.history.goBack();
+    }
+
+    continuarCompraHandler = () => {
+        this.props.history.replace("/checkout/contact-data");
+    }
+
     render() {
         return (
             <div>
-                <CheckoutSummary ingredientes={this.state.ingredientes} />
+                <CheckoutSummary
+                    ingredientes={this.state.ingredientes}
+                    cancelarCompra={this.cancelarCompraHandler}
+                    continuarCompra={this.continuarCompraHandler}
+                />
             </div>
         );
     }
