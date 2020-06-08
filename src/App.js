@@ -13,7 +13,7 @@ class App extends Component {
                     {/* pero lo hago igual para mostrar las dos cosas */}
                     <Switch>
                         <Route path="/" exact={true} component={BurgerBuilder} />
-                        <Route path="/checkout" exact={true} component={Checkout} />
+                        <Route path="/checkout" component={Checkout} />
                     </Switch>
                 </Layout>
             </div>

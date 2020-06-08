@@ -166,12 +166,12 @@ class BurguerBuilder extends Component {
         }
 
         return (
-            <Fragment>
+            <div>
                 <Modal mostrar={this.state.comprando} modalClosed={this.compraCanceladaHandler}>
                     {orderSummary}
                 </Modal>
                 {burger}
-            </Fragment>
+            </div>
         );
     }
 }
