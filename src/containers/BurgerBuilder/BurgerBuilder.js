@@ -84,41 +84,13 @@ class BurguerBuilder extends Component {
     }
 
     continuarCompraHandler = () => {
-        // this.setState({cargando: true});
-        // const compra = {
-        //     ingredientes: this.state.ingredientes,
-        //     precio: this.state.precioTotal, // en una app real, el precio se calcula en el servidor, no aca
-        //     cliente: {
-        //         nombre: "E. García",
-        //         direccion: {
-        //             calle: "Calle Falsa 123",
-        //             codigoPostal: "1234",
-        //             pais: "Peronia",
-        //         },
-        //         email: "alguien@dominio.com",
-        //     },
-        //     envio: "Venezolano de PedidosYa",
-        // }
-        // axios.post("/compras.json", compra)
-        //     .then(response => {
-        //         this.setState({
-        //             cargando: false,
-        //             comprando: false
-        //         });
-        //         console.log(response);
-        //     }).catch(error => {
-        //         this.setState({
-        //             cargando: false,
-        //             comprando: false
-        //         });
-        //         console.log(error);
-        //     });
         const queryParams = [];
         for (let i in this.state.ingredientes) {
             // encodeURIComponent codifica algo para que pueda ser usado en una url
             // esto sirve por ejemplo para tratar los espacios
             queryParams.push(encodeURIComponent(i + '=' + encodeURIComponent(this.state.ingredientes[i])));
         }
+        queryParams.push("precio=" + this.state.precioTotal);
         const queryString = queryParams.join("&"); // una los queryParams con un & entre cada elemento
         // esto es para que quede como una query en una url
         // quedaria algo como salad=1&cheese=1&meat=1&bacon=1

@@ -10,7 +10,8 @@ class Checkout extends Component {
             meat: 1,
             cheese: 1,
             bacon: 1,
-        }
+        },
+        precio: 6.9,
     }
 
     componentDidMount() {
@@ -18,15 +19,20 @@ class Checkout extends Component {
         // con URLSearchParams se lo elimina al ?
         console.log(this.props.location.search.replace(/%3D/g, "="));
         const query = new URLSearchParams(this.props.location.search.replace(/%3D/g, "="));
+        let precio = 0;
         console.log("query", query);
         const ingredientes = {};
         for (let param in query.entries()) {
             // query.entries() devuelve un array cuyos elementos son arrays
             // tipo clave/valor (algo asi ["salad", "1"])
-            ingredientes[param[0]] = +param[1];
+            if (param[0] === "precio") {
+                precio = param[1];
+            } else {
+                ingredientes[param[0]] = +param[1];
+            }
+            console.log("param", param);
         }
-        console.log("ingredientes", ingredientes);
-        //this.setState({ingredientes: ingredientes});
+        //this.setState({ingredientes: ingredientes, precioTotal: precio});
     }
 
     cancelarCompraHandler = () => {
@@ -46,7 +52,10 @@ class Checkout extends Component {
                     cancelarCompra={this.cancelarCompraHandler}
                     continuarCompra={this.continuarCompraHandler}
                 />
-                <Route path={this.props.match.path + "/contact-data"} component={ContactData} />
+                <Route
+                    path={this.props.match.path + "/contact-data"}
+                    render={() => <ContactData ingredientes={this.state.ingredientes} precio={this.state.precioTotal} />}
+                />
             </div>
         );
     }
