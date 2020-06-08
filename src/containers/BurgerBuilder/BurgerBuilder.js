@@ -113,7 +113,19 @@ class BurguerBuilder extends Component {
         //         });
         //         console.log(error);
         //     });
-        this.props.history.push("/checkout");
+        const queryParams = [];
+        for (let i in this.state.ingredientes) {
+            // encodeURIComponent codifica algo para que pueda ser usado en una url
+            // esto sirve por ejemplo para tratar los espacios
+            queryParams.push(encodeURIComponent(i + '=' + encodeURIComponent(this.state.ingredientes[i])));
+        }
+        const queryString = queryParams.join("&"); // una los queryParams con un & entre cada elemento
+        // esto es para que quede como una query en una url
+        // quedaria algo como salad=1&cheese=1&meat=1&bacon=1
+        this.props.history.push({
+            pathname: "/checkout", // la url a la que quiero ir
+            search: "?" + queryString,
+        });
     }
 
     render() {
