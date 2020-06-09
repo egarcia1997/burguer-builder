@@ -1,12 +1,11 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 import estilos from "./NavigationItem.module.css";
 
 const NavigationItem = (props) => {
     return (
         <li className={estilos.NavigationItem}>
-            <a href={props.link} className={props.active ? estilos.active : null}>
-                {props.children}
-            </a>
+            <NavLink to={props.link} exact={true} activeClassName={estilos.active}>{props.children}</NavLink>
         </li>
     );
 }
