@@ -11,7 +11,7 @@ class Checkout extends Component {
             cheese: 1,
             bacon: 1,
         },
-        precio: 6.9,
+        precioTotal: 6.9,
     }
 
     componentDidMount() {
