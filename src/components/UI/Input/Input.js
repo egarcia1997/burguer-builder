@@ -5,10 +5,13 @@ const Input = (props) => {
     let inputElement = null;
     switch (props.type) {
         case "text":
-            inputElement = <input type="text" className={estilos.InputElement} {...props} />;
+            inputElement = <input className={estilos.InputElement} {...props.elementConfig} value={props.value} />;
             break;
         case "textarea":
-            inputElement = <textarea className={estilos.InputElement} {...props} />;
+            inputElement = <textarea className={estilos.InputElement} {...props.elementConfig} value={props.value} />;
+            break;
+        default:
+            inputElement = <input className={estilos.InputElement} {...props.elementConfig} value={props.value} />;
             break;
     }
     return (

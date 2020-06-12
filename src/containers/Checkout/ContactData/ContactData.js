@@ -8,13 +8,59 @@ import Input from "../../../components/UI/Input/Input";
 
 class ContactData extends Component {
     state = {
-        name: "",
-        email: "",
-        address: {
-            street: "",
-            postalCode: "",
-        },
         cargando: false,
+        orderForm: {
+            nombre: {
+                elementType: "input",
+                elementConfig: {
+                    type: "text",
+                    placeholder: "Nombre",
+                },
+                value: "",
+            },
+            calle: {
+                elementType: "input",
+                elementConfig: {
+                    type: "text",
+                    placeholder: "Calle",
+                },
+                value: "",
+            },
+            codigoPostal: {
+                elementType: "input",
+                elementConfig: {
+                    type: "text",
+                    placeholder: "Código postal",
+                },
+                value: "",
+            },
+            pais: {
+                elementType: "input",
+                elementConfig: {
+                    type: "text",
+                    placeholder: "País",
+                },
+                value: "",
+            },
+            email: {
+                elementType: "input",
+                elementConfig: {
+                    type: "text",
+                    placeholder: "Correo electrónico",
+                },
+                value: "",
+            },
+            envio: {
+                elementType: "select",
+                elementConfig: {
+                    options: [
+                        {value: "pedidosya", displayValue: "Pedidos Ya"},
+                        {value: "correoargentino", displayValue: "Correo Argentino"},
+                    ]
+                },
+                value: "",
+            },
+        }
     }
 
     comprarHandler = (event) => {
@@ -23,16 +69,6 @@ class ContactData extends Component {
         const compra = {
             ingredientes: this.props.ingredientes,
             precio: this.props.precio, // en una app real, el precio se calcula en el servidor, no aca
-            cliente: {
-                nombre: "E. García",
-                direccion: {
-                    calle: "Calle Falsa 123",
-                    codigoPostal: "1234",
-                    pais: "Peronia",
-                },
-                email: "alguien@dominio.com",
-            },
-            envio: "Venezolano de PedidosYa",
         }
         axios.post("/compras.json", compra)
             .then(response => {
@@ -48,7 +84,7 @@ class ContactData extends Component {
     render() {
         let form = (
             <form>
-                <Input type="text" name="name" placeholder="Nombre" />
+                <Input elementType="" elementConfig="" value="" />
                 <Input type="text" name="email" placeholder="Correo electrónico" />
                 <Input type="text" name="street" placeholder="Calle" />
                 <Input type="text" name="postalCode" placeholder="Código postal" />
