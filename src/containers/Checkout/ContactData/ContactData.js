@@ -17,6 +17,10 @@ class ContactData extends Component {
                     placeholder: "Nombre",
                 },
                 value: "",
+                validation: {
+                    required: true,
+                },
+                valid: false,
             },
             calle: {
                 elementType: "input",
@@ -25,6 +29,10 @@ class ContactData extends Component {
                     placeholder: "Calle",
                 },
                 value: "",
+                validation: {
+                    required: true,
+                },
+                valid: false,
             },
             codigoPostal: {
                 elementType: "input",
@@ -33,6 +41,12 @@ class ContactData extends Component {
                     placeholder: "Código postal",
                 },
                 value: "",
+                validation: {
+                    required: true,
+                    minLength: 4,
+                    maxLength: 5,
+                },
+                valid: false,
             },
             pais: {
                 elementType: "input",
@@ -41,6 +55,10 @@ class ContactData extends Component {
                     placeholder: "País",
                 },
                 value: "",
+                validation: {
+                    required: true,
+                },
+                valid: false,
             },
             email: {
                 elementType: "input",
@@ -49,6 +67,10 @@ class ContactData extends Component {
                     placeholder: "Correo electrónico",
                 },
                 value: "",
+                validation: {
+                    required: true,
+                },
+                valid: false,
             },
             envio: {
                 elementType: "select",
@@ -59,6 +81,7 @@ class ContactData extends Component {
                     ]
                 },
                 value: "pedidosya",
+                valid: true,
             },
         }
     }
@@ -98,8 +121,24 @@ class ContactData extends Component {
             ...updatedOrderForm[inputIdentifier],
         };
         updatedFormElement.value = event.target.value;
+        updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
         updatedOrderForm[inputIdentifier] = updatedFormElement;
+        console.log(updatedFormElement);
         this.setState({orderForm: updatedOrderForm});
+    }
+
+    checkValidity = (value, rules) => {
+        let isValid = true;
+        if (rules.required) {
+            isValid = value.trim() !== "" && isValid;
+        }
+        if (rules.minLength) {
+            isValid = value.length >= rules.minLength && isValid;
+        }
+        if (rules.maxLength) {
+            isValid = value.length <= rules.maxLength && isValid;
+        }
+        return isValid;
     }
 
     render() {
