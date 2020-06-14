@@ -3,11 +3,15 @@ import estilos from "./Input.module.css";
 
 const Input = (props) => {
     let inputElement = null;
+    const inputClasses = [estilos.InputElement];
+    if (props.invalid) {
+        inputClasses.push(estilos.Invalid);
+    }
     switch (props.elementType) {
         case "text":
             inputElement =
                 <input
-                    className={estilos.InputElement}
+                    className={inputClasses.join(" ")}
                     {...props.elementConfig}
                     value={props.value}
                     onChange={props.changed}
@@ -16,7 +20,7 @@ const Input = (props) => {
         case "textarea":
             inputElement =
                 <textarea
-                    className={estilos.InputElement}
+                    className={inputClasses.join(" ")}
                     {...props.elementConfig}
                     value={props.value}
                     onChange={props.changed}
@@ -24,7 +28,7 @@ const Input = (props) => {
             break;
         case "select":
             inputElement = (
-                <select className={estilos.InputElement} {...props.elementConfig} value={props.value} onChange={props.changed}>
+                <select className={inputClasses.join(" ")} {...props.elementConfig} value={props.value} onChange={props.changed}>
                     {props.elementConfig.options.map(option => (
                         <option key={option.value} value={option.value}>{option.displayValue}</option>
                     ))}
@@ -34,7 +38,7 @@ const Input = (props) => {
         default:
             inputElement =
                 <input
-                    className={estilos.InputElement}
+                    className={inputClasses.join(" ")}
                     {...props.elementConfig}
                     value={props.value}
                     onChange={props.changed}
