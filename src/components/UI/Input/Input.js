@@ -4,7 +4,7 @@ import estilos from "./Input.module.css";
 const Input = (props) => {
     let inputElement = null;
     const inputClasses = [estilos.InputElement];
-    if (props.invalid) {
+    if (props.invalid && props.touched) {
         inputClasses.push(estilos.Invalid);
     }
     switch (props.elementType) {
