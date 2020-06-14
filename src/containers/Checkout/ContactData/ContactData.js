@@ -81,6 +81,21 @@ class ContactData extends Component {
             });
     }
 
+    inputChangedHandler = (event, inputIdentifier) => {
+        // todo este quilombo es porque al copiar con ...
+        // se guardan las referecias de los atributos de cada atributo
+        // no se copia el valor
+        const updatedOrderForm = {
+            ...this.state.orderForm,
+        };
+        const updatedFormElement = {
+            ...updatedOrderForm[inputIdentifier],
+        };
+        updatedFormElement.value = event.target.value;
+        updatedOrderForm[inputIdentifier] = updatedFormElement;
+        this.setState({orderForm: updatedOrderForm});
+    }
+
     render() {
         const formElementsArray = [];
         for (let key in this.state.orderForm) {
@@ -97,6 +112,7 @@ class ContactData extends Component {
                         elementType={formElement.config.elementType}
                         elementConfig={formElement.config.elementConfig}
                         defaultValue={formElement.config.value}
+                        changed={(event) => this.inputChangedHandler(event, formElement.id)}
                     />
                 ))}
                 <Button clicked={this.comprarHandler} tipo="Success">COMPRAR</Button>

@@ -6,15 +6,25 @@ const Input = (props) => {
     switch (props.elementType) {
         case "text":
             inputElement =
-                <input className={estilos.InputElement} {...props.elementConfig} value={props.value} />;
+                <input
+                    className={estilos.InputElement}
+                    {...props.elementConfig}
+                    value={props.value}
+                    onChange={props.changed}
+                />;
             break;
         case "textarea":
             inputElement =
-                <textarea className={estilos.InputElement} {...props.elementConfig} value={props.value} />;
+                <textarea
+                    className={estilos.InputElement}
+                    {...props.elementConfig}
+                    value={props.value}
+                    onChange={props.changed}
+                />;
             break;
         case "select":
             inputElement = (
-                <select className={estilos.InputElement} {...props.elementConfig} value={props.value}>
+                <select className={estilos.InputElement} {...props.elementConfig} value={props.value} onChange={props.changed}>
                     {props.elementConfig.options.map(option => (
                         <option key={option.value} value={option.value}>{option.displayValue}</option>
                     ))}
@@ -23,7 +33,12 @@ const Input = (props) => {
             break;
         default:
             inputElement =
-                <input className={estilos.InputElement} {...props.elementConfig} value={props.value} />;
+                <input
+                    className={estilos.InputElement}
+                    {...props.elementConfig}
+                    value={props.value}
+                    onChange={props.changed}
+                />;
             break;
     }
     return (
