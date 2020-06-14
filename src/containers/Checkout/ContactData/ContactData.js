@@ -58,7 +58,7 @@ class ContactData extends Component {
                         {value: "correoargentino", displayValue: "Correo Argentino"},
                     ]
                 },
-                value: "",
+                value: "pedidosya",
             },
         }
     }
@@ -66,9 +66,14 @@ class ContactData extends Component {
     comprarHandler = (event) => {
         event.preventDefault();
         this.setState({cargando: true});
+        const formData = {};
+        for (let formElementIdentifier in this.state.orderForm) {
+            formData[formElementIdentifier] = this.state.orderForm[formElementIdentifier].value;
+        }
         const compra = {
             ingredientes: this.props.ingredientes,
             precio: this.props.precio, // en una app real, el precio se calcula en el servidor, no aca
+            orderData: formData,
         }
         axios.post("/compras.json", compra)
             .then(response => {
@@ -85,6 +90,7 @@ class ContactData extends Component {
         // todo este quilombo es porque al copiar con ...
         // se guardan las referecias de los atributos de cada atributo
         // no se copia el valor
+        console.log(event.target.value, inputIdentifier);
         const updatedOrderForm = {
             ...this.state.orderForm,
         };
@@ -105,7 +111,7 @@ class ContactData extends Component {
             });
         }
         let form = (
-            <form>
+            <form onSubmit={this.comprarHandler}>
                 {formElementsArray.map(formElement => (
                     <Input
                         key={formElement.id}
