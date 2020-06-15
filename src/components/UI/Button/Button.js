@@ -3,7 +3,7 @@ import estilos from "./Button.module.css";
 
 const Button = (props) => {
     return (
-        <button className={[estilos.Button, estilos[props.tipo]].join(" ")} onClick={props.clicked}>{props.children}</button>
+        <button className={[estilos.Button, estilos[props.tipo]].join(" ")} onClick={props.clicked} disabled={props.disabled}>{props.children}</button>
     );
 }
 
