@@ -1,5 +1,7 @@
 import React, {Component, Fragment} from "react";
+import {connect} from "react-redux";
 import axios from "../../axios-orders";
+import * as actionTypes from "../../store/actions";
 import Burger from "../../components/Burger/Burger";
 import BuildControls from "../../components/Burger/BuildControls/BuildControls";
 import Modal from "../../components/UI/Modal/Modal";
@@ -21,8 +23,6 @@ class BurguerBuilder extends Component {
     // }
 
     state = {
-        ingredientes: null,
-        precioTotal: 4,
         comprable: false,
         comprando: false,
         cargando: false,
@@ -35,35 +35,9 @@ class BurguerBuilder extends Component {
             .then(response => {
                 this.setState({ingredientes: response.data});
             }).catch(error => {
+                console.log(error);
                 this.setState({error: true});
             });
-    }
-
-    addIngredienteHandler = (tipo) => {
-        const nuevaCantidad = this.state.ingredientes[tipo] + 1;
-        const ingredientesActualizados = {...this.state.ingredientes};
-        ingredientesActualizados[tipo] = nuevaCantidad;
-        const precioAumentado = PRECIOS_INGREDIENTES[tipo] + this.state.precioTotal;
-        this.setState({
-            ingredientes: ingredientesActualizados,
-            precioTotal: precioAumentado,
-        });
-        this.actualizarEstadoComprable(ingredientesActualizados);
-    }
-
-    removeIngredienteHandler = (tipo) => {
-        const nuevaCantidad = this.state.ingredientes[tipo] - 1;
-        if (nuevaCantidad < 0) { // este if es porque si hay 0 ingredientes al eliminar queda negativo
-            return; // y tira error en Burger
-        }
-        const ingredientesActualizados = {...this.state.ingredientes};
-        ingredientesActualizados[tipo] = nuevaCantidad;
-        const precioAumentado = this.state.precioTotal - PRECIOS_INGREDIENTES[tipo];
-        this.setState({
-            ingredientes: ingredientesActualizados,
-            precioTotal: precioAumentado,
-        });
-        this.actualizarEstadoComprable(ingredientesActualizados);
     }
 
     actualizarEstadoComprable = (ingredientes) => {
@@ -101,19 +75,19 @@ class BurguerBuilder extends Component {
     }
 
     render() {
-        const disabledInfo = {...this.state.ingredientes};
+        const disabledInfo = {...this.props.ingredients};
         for (let key in disabledInfo) {
             disabledInfo[key] = disabledInfo[key] <= 0;
         }
 
         let orderSummary = null;
-        if (this.state.ingredientes) {
+        if (this.props.ingredients) {
             orderSummary = (
                 <OrderSummary
-                ingredientes={this.state.ingredientes}
-                precio={this.state.precioTotal}
-                compraCancelada={this.compraCanceladaHandler}
-                continuarCompra={this.continuarCompraHandler}
+                    ingredientes={this.props.ingredients}
+                    precio={this.props.totalPrice}
+                    compraCancelada={this.compraCanceladaHandler}
+                    continuarCompra={this.continuarCompraHandler}
                 />
             );
         }
@@ -122,17 +96,18 @@ class BurguerBuilder extends Component {
         }
 
         let burger = this.state.error ? <p>No se pueden cargar los ingredientes</p> : <Spinner />
-        if (this.state.ingredientes) {
+        if (this.props.ingredients) {
             burger = (
                 <Fragment>
-                    <Burger ingredientes={this.state.ingredientes} />
+                    <Burger ingredientes={this.props.ingredients} />
                     <BuildControls
-                    agregar={this.addIngredienteHandler}
-                    quitar={this.removeIngredienteHandler}
-                    disabled={disabledInfo}
-                    precio={this.state.precioTotal}
-                    comprable={this.state.comprable}
-                    comprar={this.compraHandler} />
+                        agregar={this.props.onIngredientAdded}
+                        quitar={this.props.onIngredientRemoved}
+                        disabled={disabledInfo}
+                        precio={this.props.totalPrice}
+                        comprable={this.state.comprable}
+                        comprar={this.compraHandler}
+                    />
                 </Fragment>
             );    
         }
@@ -148,4 +123,18 @@ class BurguerBuilder extends Component {
     }
 }
 
-export default withErrorHandler(BurguerBuilder, axios);
+const mapStateToProps = state => {
+    return {
+        ingredients: state.ingredients,
+        totalPrice: state.totalPrice,
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onIngredientAdded: (ingredient) => dispatch({type: actionTypes.ADD_INGREDIENT, ingredientName: ingredient}),
+        onIngredientRemoved: (ingredient) => dispatch({type: actionTypes.REMOVE_INGREDIENT, ingredientName: ingredient}),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(BurguerBuilder, axios));
