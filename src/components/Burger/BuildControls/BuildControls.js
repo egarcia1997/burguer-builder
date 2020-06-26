@@ -14,12 +14,15 @@ const BuildControls = (props) => {
         <div className={estilos.BuildControls}>
             <p>Precio total: <b>${props.precio.toFixed(2)}</b></p>
             {controles.map(ctrl => {
-                return <BuildControl
-                key={ctrl.label}
-                label={ctrl.label}
-                add={() => props.agregar(ctrl.tipo)}
-                remove={() => props.quitar(ctrl.tipo)}
-                disabled={props.disabled[ctrl.tipo]} />;
+                return (
+                    <BuildControl
+                        key={ctrl.label}
+                        label={ctrl.label}
+                        add={() => props.agregar(ctrl.tipo)}
+                        remove={() => props.quitar(ctrl.tipo)}
+                        disabled={props.disabled[ctrl.tipo]}
+                    />
+                );
             })}
             <button className={estilos.OrderButton} disabled={!props.comprable} onClick={props.comprar}>COMPRAR</button>
         </div>
