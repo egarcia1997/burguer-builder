@@ -9,13 +9,6 @@ import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 
-const PRECIOS_INGREDIENTES = {
-    salad: 0.5,
-    bacon: 0.4,
-    cheese: 1.3,
-    meat: 0.7,
-}
-
 class BurguerBuilder extends Component {
     // constructor(props) {
     //     super(props);
