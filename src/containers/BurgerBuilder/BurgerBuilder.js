@@ -16,7 +16,6 @@ class BurguerBuilder extends Component {
     // }
 
     state = {
-        comprable: false,
         comprando: false,
         cargando: false,
         error: null,
@@ -35,11 +34,11 @@ class BurguerBuilder extends Component {
 
     actualizarEstadoComprable = (ingredientes) => {
         const sum = Object.keys(ingredientes).map(igKey => {
-            return ingredientes[igKey]
+            return ingredientes[igKey];
         }).reduce((sum, el) => {
             return sum + el;
         }, 0);
-        this.setState({comprable: sum > 0});
+        return sum > 0;
     }
 
     compraHandler = () => {
@@ -98,7 +97,7 @@ class BurguerBuilder extends Component {
                         quitar={this.props.onIngredientRemoved}
                         disabled={disabledInfo}
                         precio={this.props.totalPrice}
-                        comprable={this.state.comprable}
+                        comprable={this.actualizarEstadoComprable(this.props.ingredients)}
                         comprar={this.compraHandler}
                     />
                 </Fragment>
