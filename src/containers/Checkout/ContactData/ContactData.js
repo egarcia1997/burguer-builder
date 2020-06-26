@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import {connect} from "react-redux";
 import { withRouter } from "react-router-dom";
 import Button from "../../../components/UI/Button/Button";
 import estilos from "./ContactData.module.css";
@@ -104,8 +105,8 @@ class ContactData extends Component {
             formData[formElementIdentifier] = this.state.orderForm[formElementIdentifier].value;
         }
         const compra = {
-            ingredientes: this.props.ingredientes,
-            precio: this.props.precio, // en una app real, el precio se calcula en el servidor, no aca
+            ingredientes: this.props.ingredients,
+            precio: this.props.totalPrice, // en una app real, el precio se calcula en el servidor, no aca
             orderData: formData,
         }
         axios.post("/compras.json", compra)
@@ -194,4 +195,11 @@ class ContactData extends Component {
     }
 }
 
-export default withRouter(ContactData);
+const mapStateToProps = state => {
+    return {
+        ingredients: state.ingredients,
+        totalPrice: state.totalPrice,
+    }
+}
+
+export default connect(mapStateToProps)(withRouter(ContactData));
