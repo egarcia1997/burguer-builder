@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from "react";
 import {connect} from "react-redux";
 import axios from "../../axios-orders";
-import * as actionTypes from "../../store/actions/actionTypes";
+import {addIngredient, removeIngredient} from "../../store/actions/index";
 import Burger from "../../components/Burger/Burger";
 import BuildControls from "../../components/Burger/BuildControls/BuildControls";
 import Modal from "../../components/UI/Modal/Modal";
@@ -111,8 +111,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onIngredientAdded: (ingredient) => dispatch({type: actionTypes.ADD_INGREDIENT, ingredientName: ingredient}),
-        onIngredientRemoved: (ingredient) => dispatch({type: actionTypes.REMOVE_INGREDIENT, ingredientName: ingredient}),
+        onIngredientAdded: (ingredient) => dispatch(addIngredient(ingredient)),
+        onIngredientRemoved: (ingredient) => dispatch(removeIngredient(ingredient)),
     }
 }
 
