@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from "react";
 import {connect} from "react-redux";
 import axios from "../../axios-orders";
-import {addIngredient, removeIngredient} from "../../store/actions/index";
+import {addIngredient, removeIngredient, initIngredients} from "../../store/actions/index";
 import Burger from "../../components/Burger/Burger";
 import BuildControls from "../../components/Burger/BuildControls/BuildControls";
 import Modal from "../../components/UI/Modal/Modal";
@@ -17,10 +17,11 @@ class BurguerBuilder extends Component {
 
     state = {
         comprando: false,
-        error: null,
     }
 
-    componentDidMount() {}
+    componentDidMount() {
+        this.props.onInitIngredients();
+    }
 
     actualizarEstadoComprable = (ingredientes) => {
         const sum = Object.keys(ingredientes).map(igKey => {
@@ -61,7 +62,7 @@ class BurguerBuilder extends Component {
             );
         }
 
-        let burger = this.state.error ? <p>No se pueden cargar los ingredientes</p> : <Spinner />
+        let burger = this.props.error ? <p>No se pueden cargar los ingredientes</p> : <Spinner />
         if (this.props.ingredients) {
             burger = (
                 <Fragment>
@@ -93,6 +94,7 @@ const mapStateToProps = state => {
     return {
         ingredients: state.ingredients,
         totalPrice: state.totalPrice,
+        error: state.error,
     }
 }
 
@@ -100,6 +102,7 @@ const mapDispatchToProps = dispatch => {
     return {
         onIngredientAdded: (ingredient) => dispatch(addIngredient(ingredient)),
         onIngredientRemoved: (ingredient) => dispatch(removeIngredient(ingredient)),
+        onInitIngredients: () => dispatch(initIngredients()),
     }
 }
 
