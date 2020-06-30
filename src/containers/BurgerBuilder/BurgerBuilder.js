@@ -17,20 +17,10 @@ class BurguerBuilder extends Component {
 
     state = {
         comprando: false,
-        cargando: false,
         error: null,
     }
 
-    componentDidMount() {
-        console.log("BurgerBuilder props", this.props);
-        axios.get("https://practica-burger-builder.firebaseio.com/ingredientes.json")
-            .then(response => {
-                this.setState({ingredientes: response.data});
-            }).catch(error => {
-                console.log(error);
-                this.setState({error: true});
-            });
-    }
+    componentDidMount() {}
 
     actualizarEstadoComprable = (ingredientes) => {
         const sum = Object.keys(ingredientes).map(igKey => {
@@ -69,9 +59,6 @@ class BurguerBuilder extends Component {
                     continuarCompra={this.continuarCompraHandler}
                 />
             );
-        }
-        if (this.state.cargando) {
-            orderSummary = <Spinner />;
         }
 
         let burger = this.state.error ? <p>No se pueden cargar los ingredientes</p> : <Spinner />
