@@ -190,12 +190,13 @@ const mapStateToProps = state => {
     return {
         ingredients: state.ingredients,
         totalPrice: state.totalPrice,
+        cargando: state.cargando,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onOrderBurger: (orderData) => {dispatch(purchaseBurgerStart(orderData))}
+        onOrderBurger: (orderData) => {dispatch(purchaseBurger(orderData))}
     }
 }
 
