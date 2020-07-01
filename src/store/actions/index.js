@@ -2,4 +2,4 @@
 // esto es para que pueda importar todo desde un solo archivo
 
 export {addIngredient, removeIngredient, initIngredients} from "./burgerBuilder";
-export {purchaseBurgerStart} from "./order";
+export {purchaseBurger, purchaseBurgerStart} from "./order";
