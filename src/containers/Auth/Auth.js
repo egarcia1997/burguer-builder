@@ -111,7 +111,7 @@ class Auth extends Component {
                 <form className={estilos.Auth} onSubmit={this.submitHandler}>
                     {form}
                     <Button tipo="Success" disabled={!this.state.formIsValid}>
-                        INICIAR SESIÓN
+                        REGISTRARSE
                     </Button>
                 </form>
             </div>
