@@ -117,7 +117,6 @@ class ContactData extends Component {
         // todo este quilombo es porque al copiar con ...
         // se guardan las referecias de los atributos de cada atributo
         // no se copia el valor
-        console.log(event.target.value, inputIdentifier);
         const updatedOrderForm = {
             ...this.state.orderForm,
         };
