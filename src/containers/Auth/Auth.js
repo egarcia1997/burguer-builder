@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import Button from "../../components/UI/Button/Button";
 import Input from "../../components/UI/Input/Input";
 import estilos from "./Auth.module.css";
+import {auth} from "../../store/actions";
+import { connect } from "react-redux";
 
 class Auth extends Component {
     state = {
@@ -76,6 +78,11 @@ class Auth extends Component {
         return isValid;
     }
 
+    submitHandler = (event) => {
+        event.preventDefault();
+        this.props.onAuth(this.state.controls.email.value, this.state.controls.password.value);
+    }
+
     render() {
         const formElementsArray = [];
         for (let key in this.state.controls) {
@@ -85,7 +92,7 @@ class Auth extends Component {
             });
         }
         let form = (
-            <form onSubmit={this.comprarHandler}>
+            <form>
                 {formElementsArray.map(formElement => (
                     <Input
                         key={formElement.id}
@@ -100,10 +107,10 @@ class Auth extends Component {
             </form>
         );
         return (
-            <div className={estilos.Auth}>
-                <form>
+            <div>
+                <form className={estilos.Auth} onSubmit={this.submitHandler}>
                     {form}
-                    <Button clicked={this.comprarHandler} tipo="Success" disabled={!this.state.formIsValid}>
+                    <Button tipo="Success" disabled={!this.state.formIsValid}>
                         INICIAR SESIÓN
                     </Button>
                 </form>
@@ -112,4 +119,10 @@ class Auth extends Component {
     }
 }
 
-export default Auth;
+const mapDispatchToProps = dispatch => {
+    return {
+        onAuth: (email, password) => dispatch(auth(email, password)),
+    }
+}
+
+export default connect(null, mapDispatchToProps)(Auth);
