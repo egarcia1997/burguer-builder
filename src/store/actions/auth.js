@@ -40,7 +40,10 @@ export const auth = (email, password, isSignup) => {
                 dispatch(authSuccess(response.data.idToken, response.data.localId));
             }).catch(error => {
                 console.log(error);
-                dispatch(authFail(error));
+                // esto es porque axios hace asi
+                // mete la response en un objeto error
+                // error.response es igual a la response de arriba
+                dispatch(authFail(error.response.data.error));
             });
     }
 }

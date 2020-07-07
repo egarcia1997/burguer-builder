@@ -1,6 +1,7 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import Button from "../../components/UI/Button/Button";
 import Input from "../../components/UI/Input/Input";
+import Spinner from "../../components/UI/Spinner/Spinner";
 import estilos from "./Auth.module.css";
 import {auth} from "../../store/actions";
 import { connect } from "react-redux";
@@ -98,8 +99,9 @@ class Auth extends Component {
                 config: this.state.controls[key],
             });
         }
+
         let form = (
-            <form>
+            <Fragment>
                 {formElementsArray.map(formElement => (
                     <Input
                         key={formElement.id}
@@ -111,21 +113,41 @@ class Auth extends Component {
                         changed={(event) => this.inputChangedHandler(event, formElement.id)}
                     />
                 ))}
+                <Button tipo="Success" disabled={!this.state.formIsValid}>
+                    {this.state.isSignup ? "INICIAR SESIÓN" : "REGISTRARSE"}
+                </Button>
+                <Button tipo="Danger" clicked={this.switchAuthModeHandler}>
+                    {this.state.isSignup ? "QUIERO REGISTRARME" : "YA TENGO CUENTA"}
+                </Button>
+            </Fragment>
+        );
+
+        if (this.props.cargando) {
+            form = <Spinner />;
+        }
+
+        let errorMessage = null;
+        if (this.props.error) {
+            errorMessage = (
+                // la propiedad message es porque uso el error sacado directamente de firebase
+                // con otro backend no sirve
+                <p>{this.props.error.message}</p>
+            );
+        }
+
+        return (
+            <form className={estilos.Auth} onSubmit={this.submitHandler}>
+                {form}
+                {errorMessage}
             </form>
         );
-        return (
-            <div>
-                <form className={estilos.Auth} onSubmit={this.submitHandler}>
-                    {form}
-                    <Button tipo="Success" disabled={!this.state.formIsValid}>
-                        {this.state.isSignup ? "INICIAR SESIÓN" : "REGISTRARSE"}
-                    </Button>
-                    <Button tipo="Danger" clicked={this.switchAuthModeHandler}>
-                        {this.state.isSignup ? "QUIERO REGISTRARME" : "YA TENGO CUENTA"}
-                    </Button>
-                </form>
-            </div>
-        );
+    }
+}
+
+const mapStateToProps = state => {
+    return {
+        cargando: state.auth.cargando,
+        error: state.auth.error,
     }
 }
 
@@ -135,4 +157,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(null, mapDispatchToProps)(Auth);
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);
