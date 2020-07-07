@@ -38,6 +38,7 @@ class Auth extends Component {
         },
         cargando: false,
         formIsValid: false,
+        isSignup: true,
     };
 
     inputChangedHandler = (event, inputIdentifier) => {
@@ -80,7 +81,13 @@ class Auth extends Component {
 
     submitHandler = (event) => {
         event.preventDefault();
-        this.props.onAuth(this.state.controls.email.value, this.state.controls.password.value);
+        this.props.onAuth(this.state.controls.email.value, this.state.controls.password.value, this.state.isSignup);
+    }
+
+    switchAuthModeHandler = () => {
+        this.setState(prevState => {
+            return {isSignup: !prevState.isSignup,};
+        });
     }
 
     render() {
@@ -111,7 +118,10 @@ class Auth extends Component {
                 <form className={estilos.Auth} onSubmit={this.submitHandler}>
                     {form}
                     <Button tipo="Success" disabled={!this.state.formIsValid}>
-                        REGISTRARSE
+                        {this.state.isSignup ? "INICIAR SESIÓN" : "REGISTRARSE"}
+                    </Button>
+                    <Button tipo="Danger" clicked={this.switchAuthModeHandler}>
+                        {this.state.isSignup ? "QUIERO REGISTRARME" : "YA TENGO CUENTA"}
                     </Button>
                 </form>
             </div>
@@ -121,7 +131,7 @@ class Auth extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAuth: (email, password) => dispatch(auth(email, password)),
+        onAuth: (email, password, isSignup) => dispatch(auth(email, password, isSignup)),
     }
 }
 

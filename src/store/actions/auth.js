@@ -21,7 +21,7 @@ const authStart = (error) => {
     }
 }
 
-export const auth = (email, password) => {
+export const auth = (email, password, isSignup) => {
     return dispatch => {
         dispatch(authStart());
         const authData = {
@@ -29,9 +29,11 @@ export const auth = (email, password) => {
             password: password,
             returnSecureToken: true,
         }
-        // esto es para REGISTRAR UN USUARIO
-        // NO PARA INICIAR SESIÓN
-        Axios.post("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBoQ1WAnxZ65FOWjAomu45_8wGXsIx6rT8", authData)
+        let url = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBoQ1WAnxZ65FOWjAomu45_8wGXsIx6rT8";
+        if (isSignup) {
+            url = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBoQ1WAnxZ65FOWjAomu45_8wGXsIx6rT8";
+        }
+        Axios.post(url, authData)
             .then(response => {
                 console.log(response);
                 dispatch(authSuccess());
