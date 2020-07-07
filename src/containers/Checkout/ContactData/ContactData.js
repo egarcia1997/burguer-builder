@@ -110,7 +110,7 @@ class ContactData extends Component {
             precio: this.props.totalPrice, // en una app real, el precio se calcula en el servidor, no aca
             orderData: formData,
         }
-        this.props.onOrderBurger(compra);
+        this.props.onOrderBurger(compra, this.props.token);
     }
 
     inputChangedHandler = (event, inputIdentifier) => {
@@ -190,12 +190,13 @@ const mapStateToProps = state => {
         ingredients: state.burgerBuilder.ingredients,
         totalPrice: state.burgerBuilder.totalPrice,
         cargando: state.order.cargando,
+        token: state.auth.token,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onOrderBurger: (orderData) => {dispatch(purchaseBurger(orderData))}
+        onOrderBurger: (orderData, token) => {dispatch(purchaseBurger(orderData, token))}
     }
 }
 
