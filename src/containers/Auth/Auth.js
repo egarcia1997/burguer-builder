@@ -5,6 +5,7 @@ import Spinner from "../../components/UI/Spinner/Spinner";
 import estilos from "./Auth.module.css";
 import {auth} from "../../store/actions";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 
 class Auth extends Component {
     state = {
@@ -135,10 +136,16 @@ class Auth extends Component {
             );
         }
 
+        let authRedirect = null;
+        if (this.props.isAuthenticated) {
+            authRedirect = <Redirect to="/" />
+        }
+
         return (
             <form className={estilos.Auth} onSubmit={this.submitHandler}>
                 {form}
                 {errorMessage}
+                {authRedirect}
             </form>
         );
     }
@@ -148,6 +155,7 @@ const mapStateToProps = state => {
     return {
         cargando: state.auth.cargando,
         error: state.auth.error,
+        isAuthenticated: state.auth.token !== null,
     }
 }
 

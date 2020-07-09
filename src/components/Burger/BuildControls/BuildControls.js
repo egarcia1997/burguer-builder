@@ -24,7 +24,9 @@ const BuildControls = (props) => {
                     />
                 );
             })}
-            <button className={estilos.OrderButton} disabled={!props.comprable} onClick={props.comprar}>COMPRAR</button>
+            <button className={estilos.OrderButton} disabled={!props.comprable} onClick={props.comprar}>
+                {props.isAuth ? "COMPRAR" : "INICIAR SESIÓN PARA COMPRAR"}
+            </button>
         </div>
     );
 }
