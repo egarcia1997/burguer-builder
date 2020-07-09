@@ -3,7 +3,7 @@ import Button from "../../components/UI/Button/Button";
 import Input from "../../components/UI/Input/Input";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import estilos from "./Auth.module.css";
-import {auth} from "../../store/actions";
+import {auth, setAuthRedirectPath} from "../../store/actions";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 
@@ -42,6 +42,12 @@ class Auth extends Component {
         formIsValid: false,
         isSignup: true,
     };
+
+    componentDidMount = () => {
+        if (!this.props.construyendo && this.props.authRedirectPath !== "/") {
+            this.props.onSetAuthRedirectPath("/");
+        }
+    }
 
     inputChangedHandler = (event, inputIdentifier) => {
         // todo este quilombo es porque al copiar con ...
@@ -138,7 +144,7 @@ class Auth extends Component {
 
         let authRedirect = null;
         if (this.props.isAuthenticated) {
-            authRedirect = <Redirect to="/" />
+            authRedirect = <Redirect to={this.props.authRedirectPath} />
         }
 
         return (
@@ -156,12 +162,15 @@ const mapStateToProps = state => {
         cargando: state.auth.cargando,
         error: state.auth.error,
         isAuthenticated: state.auth.token !== null,
+        construyendo: state.burgerBuilder.construyendo,
+        authRedirectPath: state.auth.authRedirectPath,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         onAuth: (email, password, isSignup) => dispatch(auth(email, password, isSignup)),
+        onSetAuthRedirectPath: (path) => dispatch(setAuthRedirectPath(path)),
     }
 }
 

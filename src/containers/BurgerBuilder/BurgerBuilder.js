@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from "react";
 import {connect} from "react-redux";
 import axios from "../../axios-orders";
-import {addIngredient, removeIngredient, initIngredients} from "../../store/actions/index";
+import {addIngredient, removeIngredient, initIngredients, setAuthRedirectPath} from "../../store/actions/index";
 import Burger from "../../components/Burger/Burger";
 import BuildControls from "../../components/Burger/BuildControls/BuildControls";
 import Modal from "../../components/UI/Modal/Modal";
@@ -37,6 +37,7 @@ class BurguerBuilder extends Component {
             this.setState({comprando: true});
         }
         else {
+            this.props.onSetAuthRedirectPath("/checkout");
             this.props.history.push("/auth");
         }
     }
@@ -110,6 +111,7 @@ const mapDispatchToProps = dispatch => {
         onIngredientAdded: (ingredient) => dispatch(addIngredient(ingredient)),
         onIngredientRemoved: (ingredient) => dispatch(removeIngredient(ingredient)),
         onInitIngredients: () => dispatch(initIngredients()),
+        onSetAuthRedirectPath: (path) => dispatch(setAuthRedirectPath(path)),
     }
 }
 
