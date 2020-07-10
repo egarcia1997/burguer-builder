@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import {connect} from "react-redux";
-import { withRouter } from "react-router-dom";
+import { withRouter, StaticRouter } from "react-router-dom";
 import Button from "../../../components/UI/Button/Button";
 import estilos from "./ContactData.module.css";
 import axios from "../../../axios-orders";
@@ -109,6 +109,7 @@ class ContactData extends Component {
             ingredientes: this.props.ingredients,
             precio: this.props.totalPrice, // en una app real, el precio se calcula en el servidor, no aca
             orderData: formData,
+            userId: this.props.userId,
         }
         this.props.onOrderBurger(compra, this.props.token);
     }
@@ -191,6 +192,7 @@ const mapStateToProps = state => {
         totalPrice: state.burgerBuilder.totalPrice,
         cargando: state.order.cargando,
         token: state.auth.token,
+        userId: state.auth.userId,
     }
 }
 

@@ -1,5 +1,6 @@
 import * as actionTypes from "./actionTypes";
 import axios from "../../axios-orders";
+import { useImperativeHandle } from "react";
 
 const purchaseBurgerSuccess = (id, orderData) => {
     return {
@@ -60,12 +61,14 @@ const fetchOrdersStart = () => {
     }
 }
 
-export const fetchOrders = (token) => {
+export const fetchOrders = (token, userId) => {
     return dispatch => {
         dispatch(fetchOrdersStart());
         const params = {
             params: {
                 auth: token,
+                orderBy: "\"userId\"",
+                equalTo: "\"" + userId + "\"",
             }
         };
         axios.get("/compras.json", params)
