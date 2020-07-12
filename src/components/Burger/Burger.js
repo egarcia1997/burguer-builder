@@ -4,7 +4,6 @@ import estilos from "./Burger.module.css";
 import BurgerIngredient from "./BurgerIngredient/BurgerIngredient";
 
 const Burger = (props) => {
-    console.log("Burger props", props);
     let ingredientesTransformados = Object.keys(props.ingredientes).map(igKey => {
         return [...Array(props.ingredientes[igKey])].map((_, i) => {
             return <BurgerIngredient key={igKey + i} tipo={igKey} />;
@@ -12,8 +11,6 @@ const Burger = (props) => {
     }).reduce((arr, el) => {
         return arr.concat(el);
     }, []);
-    console.log(ingredientesTransformados);
-
     if (ingredientesTransformados.length === 0) {
         ingredientesTransformados = <p>Empezá a agregar los ingredientes</p>
     }
