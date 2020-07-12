@@ -6,6 +6,7 @@ import estilos from "./Auth.module.css";
 import {auth, setAuthRedirectPath} from "../../store/actions";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
+import {updateObject} from "../../shared/utility";
 
 class Auth extends Component {
     state = {
@@ -53,16 +54,13 @@ class Auth extends Component {
         // todo este quilombo es porque al copiar con ...
         // se guardan las referecias de los atributos de cada atributo
         // no se copia el valor
-        const updatedControls = {
-            ...this.state.controls,
-        };
-        const updatedFormElement = {
-            ...updatedControls[inputIdentifier],
-        };
-        updatedFormElement.value = event.target.value;
-        updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
-        updatedFormElement.touched = true;
-        updatedControls[inputIdentifier] = updatedFormElement;
+        const updatedControls = updateObject(this.state.controls, {
+            [inputIdentifier]: updateObject(this.state.controls[inputIdentifier], {
+                value: event.target.value,
+                valid: this.checkValidity(event.target.value, this.state.controls[inputIdentifier].validation),
+                touched: true,
+            }),
+        });
         let formIsValid = true;
         for (let inputIdentifier in updatedControls) {
             formIsValid = updatedControls[inputIdentifier].valid && formIsValid;

@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import {connect} from "react-redux";
-import { withRouter, StaticRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import Button from "../../../components/UI/Button/Button";
 import estilos from "./ContactData.module.css";
 import axios from "../../../axios-orders";
-import Spinner from "../../../components/UI/Spinner/Spinner";
 import Input from "../../../components/UI/Input/Input";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
 import {purchaseBurger} from "../../../store/actions/index";
+import {updateObject} from "../../../shared/utility";
 
 class ContactData extends Component {
     state = {
@@ -115,19 +115,14 @@ class ContactData extends Component {
     }
 
     inputChangedHandler = (event, inputIdentifier) => {
-        // todo este quilombo es porque al copiar con ...
-        // se guardan las referecias de los atributos de cada atributo
-        // no se copia el valor
-        const updatedOrderForm = {
-            ...this.state.orderForm,
-        };
-        const updatedFormElement = {
-            ...updatedOrderForm[inputIdentifier],
-        };
-        updatedFormElement.value = event.target.value;
-        updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
-        updatedFormElement.touched = true;
-        updatedOrderForm[inputIdentifier] = updatedFormElement;
+        const updatedFormElement = updateObject(this.state.orderForm[inputIdentifier], {
+            value: event.target.value,
+            valid: this.checkValidity(event.target.value, this.state.orderForm[inputIdentifier].validation),
+            touched: true,
+        });
+        const updatedOrderForm = updateObject(this.state.orderForm, {
+            [inputIdentifier]: updatedFormElement,
+        });
         let formIsValid = true;
         for (let inputIdentifier in updatedOrderForm) {
             formIsValid = updatedOrderForm[inputIdentifier].valid && formIsValid;
