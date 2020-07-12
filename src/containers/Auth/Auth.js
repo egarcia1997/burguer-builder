@@ -6,7 +6,7 @@ import estilos from "./Auth.module.css";
 import {auth, setAuthRedirectPath} from "../../store/actions";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
-import {updateObject} from "../../shared/utility";
+import { updateObject, checkValidity } from "../../shared/utility";
 
 class Auth extends Component {
     state = {
@@ -57,7 +57,7 @@ class Auth extends Component {
         const updatedControls = updateObject(this.state.controls, {
             [inputIdentifier]: updateObject(this.state.controls[inputIdentifier], {
                 value: event.target.value,
-                valid: this.checkValidity(event.target.value, this.state.controls[inputIdentifier].validation),
+                valid: checkValidity(event.target.value, this.state.controls[inputIdentifier].validation),
                 touched: true,
             }),
         });
@@ -69,20 +69,6 @@ class Auth extends Component {
             controls: updatedControls,
             formIsValid: formIsValid,
         });
-    }
-
-    checkValidity = (value, rules) => {
-        let isValid = true;
-        if (rules.required) {
-            isValid = value.trim() !== "" && isValid;
-        }
-        if (rules.minLength) {
-            isValid = value.length >= rules.minLength && isValid;
-        }
-        if (rules.maxLength) {
-            isValid = value.length <= rules.maxLength && isValid;
-        }
-        return isValid;
     }
 
     submitHandler = (event) => {
