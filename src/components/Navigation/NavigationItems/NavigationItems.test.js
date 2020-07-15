@@ -19,4 +19,12 @@ describe("<NavigationItems />", () => {
         wrapper.setProps({isAuthenticated: true});
         expect(wrapper.find(NavigationItem)).toHaveLength(3);
     });
+    it("deberia mostrar el enlace de cerrar sesion si el usuario inicio sesion", () => {
+        wrapper.setProps({isAuthenticated: true});
+        expect(wrapper.contains(
+            <NavigationItem link="/logout">
+                Cerrar sesión
+            </NavigationItem>
+        )).toEqual(true);
+    });
 });
