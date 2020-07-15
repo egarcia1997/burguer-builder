@@ -7,9 +7,16 @@ import NavigationItem from "./NavigationItem/NavigationItem";
 configure({adapter: new Adapter()});
 
 describe("<NavigationItems />", () => {
-    it("deberia mostrar dos elementos <NavigationItem /> si el usuario no inicio sesion", () => {
+    let wrapper;
+    beforeEach(() => {
         // el argumento de shallow debe ser pasado como jsx
-        const wrapper = shallow(<NavigationItems />);
+        wrapper = shallow(<NavigationItems />);
+    });
+    it("deberia mostrar dos elementos <NavigationItem /> si el usuario no inicio sesion", () => {
         expect(wrapper.find(NavigationItem)).toHaveLength(2);
+    });
+    it("deberia mostrar tres elementos <NavigationItem /> si el usuario inicio sesion", () => {
+        wrapper.setProps({isAuthenticated: true});
+        expect(wrapper.find(NavigationItem)).toHaveLength(3);
     });
 });
