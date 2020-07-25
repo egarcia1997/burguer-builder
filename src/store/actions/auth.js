@@ -1,7 +1,7 @@
 import * as actionTypes from "./actionTypes";
 import Axios from "axios";
 
-const authSuccess = (idToken, userId) => {
+export const authSuccess = (idToken, userId) => {
     return {
         type: actionTypes.AUTH_SUCCESS,
         idToken: idToken,
@@ -9,14 +9,14 @@ const authSuccess = (idToken, userId) => {
     }
 }
 
-const authFail = (error) => {
+export const authFail = (error) => {
     return {
         type: actionTypes.AUTH_FAIL,
         error: error,
     }
 }
 
-const authStart = () => {
+export const authStart = () => {
     return {
         type: actionTypes.AUTH_START,
     }
@@ -42,32 +42,11 @@ export const checkAuthTimeout = expirationTime => {
 }
 
 export const auth = (email, password, isSignup) => {
-    return dispatch => {
-        dispatch(authStart());
-        const authData = {
-            email: email,
-            password: password,
-            returnSecureToken: true,
-        }
-        let url = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBoQ1WAnxZ65FOWjAomu45_8wGXsIx6rT8";
-        if (isSignup) {
-            url = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBoQ1WAnxZ65FOWjAomu45_8wGXsIx6rT8";
-        }
-        Axios.post(url, authData)
-            .then(response => {
-                const expirationDate = new Date(new Date().getTime() + response.data.expiresIn * 1000);
-                localStorage.setItem("token", response.data.idToken);
-                localStorage.setItem("expirationDate", expirationDate);
-                localStorage.setItem("userId", response.data.localId);
-                dispatch(authSuccess(response.data.idToken, response.data.localId));
-                dispatch(checkAuthTimeout(response.data.expiresIn));
-            }).catch(error => {
-                console.log(error);
-                // esto es porque axios hace asi
-                // mete la response en un objeto error
-                // error.response es igual a la response de arriba
-                dispatch(authFail(error.response.data.error));
-            });
+    return {
+        type: actionTypes.AUTH,
+        email: email,
+        password: password,
+        isSignup: isSignup,
     }
 }
 
