@@ -1,43 +1,46 @@
-import React, {Fragment, Component} from "react";
+import React, {Fragment, useState, useEffect} from "react";
 import Modal from "../../components/UI/Modal/Modal";
 
 const withErrorHandler = (WrappedComponent, axios) => {
-    return (class extends Component {
-        state = {
-            error: null,
+    return (props => {
+        const [error, setError] = useState(null);
+
+        // esto que estaba en componentWillMount
+        // se deja asi, fuera de cualquier funcion o hook
+        // porque se ejecuta ANTES de renderizar el jsx (lo del return)
+        const reqInterceptor = axios.interceptors.request.use(request => {
+            setError(null);
+            return request;
+        });
+        const resInterceptor = axios.interceptors.response.use(response => response, error => {
+            // este error hace referencia al argumento, no al estado
+            console.log(error);
+            setError(error.message);
+        });
+
+        // para hacer algo igual a componentWillUnmount
+        // tengo que usar useEffect y pasarle una funcion que devuelve otra funcion
+        // y pasarle un array vacio como dependencia
+        useEffect(() => {
+            return () => {
+                axios.interceptors.request.eject(reqInterceptor);
+                axios.interceptors.response.eject(resInterceptor);
+            }
+        }, [reqInterceptor, resInterceptor]);
+
+        const errorConfirmadoHandler = () => { // esto se ejecuta al hacer clic en el backdrop
+            setError(null);
         }
 
-        UNSAFE_componentWillMount() {
-            this.reqInterceptor = axios.interceptors.request.use(request => {
-                this.setState({error: null});
-                return request;
-            });
-            this.resInterceptor = axios.interceptors.response.use(response => response, error => {
-                console.log(error);
-                this.setState({error: error.message});
-            });
-        }
-
-        componentWillUnmount() {
-            axios.interceptors.request.eject(this.reqInterceptor);
-            axios.interceptors.response.eject(this.resInterceptor);
-        }
-
-        errorConfirmadoHandler = () => { // esto se ejecuta al hacer clic en el backdrop
-            this.setState({error: null});
-        }
-
-        render() {
-            return (
-                <Fragment>
-                    <Modal mostrar={this.state.error} modalClosed={this.errorConfirmadoHandler}>
-                        Algo salió mal<br />
-                        {this.state.error ? this.state.error : null}
-                    </Modal>
-                    <WrappedComponent {...this.props} />
-                </Fragment>
-            );
-        }
+        return (
+            <Fragment>
+                <Modal mostrar={error} modalClosed={errorConfirmadoHandler}>
+                    Algo salió mal<br />
+                    {error ? error : null}
+                </Modal>
+                <WrappedComponent {...props} />
+            </Fragment>
+        );
     });
 }
 
