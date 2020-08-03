@@ -1,43 +1,41 @@
-import React, {Component} from "react";
+import React, { useEffect } from "react";
 import { Route, Redirect } from "react-router-dom";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import CheckoutSummary from "../../components/Order/CheckoutSummary/CheckoutSummary";
 import ContactData from "./ContactData/ContactData";
 import * as actions from "../../store/actions/index";
 
-class Checkout extends Component {
-    componentDidMount = () => {
-        this.props.onInitPurchase();
-    }
+const Checkout = props => {
+    useEffect(() => {
+        props.onInitPurchase();
+    }, []);
 
-    cancelarCompraHandler = () => {
+    const cancelarCompraHandler = () => {
         // este metodo es lo mismo que hacer clic en el boton atras del navegador
-        this.props.history.goBack();
+        props.history.goBack();
     }
 
-    continuarCompraHandler = () => {
-        this.props.history.push("/checkout/contact-data");
+    const continuarCompraHandler = () => {
+        props.history.push("/checkout/contact-data");
     }
 
-    render() {
-        let summary = <Redirect to="/" />;
-        if (this.props.ingredients) {
-            const purchasedReditect = this.props.comprado ? <Redirect to="/" /> :  null;
-            summary = (
-                <div>
-                    {purchasedReditect}
-                    <CheckoutSummary
-                        ingredientes={this.props.ingredients}
-                        cancelarCompra={this.cancelarCompraHandler}
-                        continuarCompra={this.continuarCompraHandler}
-                    />
-                    <Route path={this.props.match.path + "/contact-data"} component={ContactData} />
-                </div>
-                
-            );
-        }
-        return summary;
+    let summary = <Redirect to="/" />;
+    if (props.ingredients) {
+        const purchasedReditect = props.comprado ? <Redirect to="/" /> :  null;
+        summary = (
+            <div>
+                {purchasedReditect}
+                <CheckoutSummary
+                    ingredientes={props.ingredients}
+                    cancelarCompra={cancelarCompraHandler}
+                    continuarCompra={continuarCompraHandler}
+                />
+                <Route path={props.match.path + "/contact-data"} component={ContactData} />
+            </div>
+            
+        );
     }
+    return summary;
 }
 
 const mapStateToProps = state => {
