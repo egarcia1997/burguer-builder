@@ -42,11 +42,12 @@ const Auth = props => {
     const [isSignUp, setIsSignUp] = useState(true);
 
 
+    const {construyendo, authRedirectPath, onSetAuthRedirectPath} = props;
     useEffect(() => {
-        if (!props.construyendo && props.authRedirectPath !== "/") {
-            props.onSetAuthRedirectPath("/");
+        if (!construyendo && authRedirectPath !== "/") {
+            onSetAuthRedirectPath("/");
         }
-    }, []);
+    }, [construyendo, authRedirectPath, onSetAuthRedirectPath]);
 
     const inputChangedHandler = (event, inputIdentifier) => {
         // todo este quilombo es porque al copiar con ...

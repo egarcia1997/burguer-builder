@@ -6,9 +6,10 @@ import ContactData from "./ContactData/ContactData";
 import * as actions from "../../store/actions/index";
 
 const Checkout = props => {
+    const {onInitPurchase} = props;
     useEffect(() => {
-        props.onInitPurchase();
-    }, []);
+        onInitPurchase();
+    }, [onInitPurchase]);
 
     const cancelarCompraHandler = () => {
         // este metodo es lo mismo que hacer clic en el boton atras del navegador

@@ -12,9 +12,10 @@ import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 const BurguerBuilder = props => {
     const [comprando, setComprando] = useState(false);
 
+    const {onInitIngredients} = props;
     useEffect(() => {
-        props.onInitIngredients();
-    }, []);
+        onInitIngredients();
+    }, [onInitIngredients]);
 
     const actualizarEstadoComprable = ingredientes => {
         const sum = Object.keys(ingredientes).map(igKey => {
